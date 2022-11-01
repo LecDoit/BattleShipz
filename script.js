@@ -1,277 +1,355 @@
 import * as ShipFile from "./ship.js"
+import * as GameboardFile from "./Gameboard.js"
+import * as playerFile from "./player.js"
 
+let getRandom = function(min,max){
+    return Math.floor(Math.random() *(max-min) +min)
+}
+///////////////////////////////////////
 
-// console.log(trojka.hit(0))
-// console.log(trojka.hit(1))
-// // console.log(trojka.hlet trojka = Ship(3,0)
-// console.log(trojka.hit(0))
-// console.log(trojka.hit(1))
-// // console.log(trojka.hit(2))
-// isSunk(trojka)
-
-// console.log(trojka)
 
 //      2 Gameboard
 
-let Gameboard = function(ships){
 
-    let gridCol = [
-        {
-            A:'1',
-            grids: [1,2,3,4,5,6,7,8,9,10]
-        },
-        {
-            B:'2',
-            grids: [1,2,3,4,5,6,7,8,9,10]
-        },
-        {
-            C:'3',
-            grids: [1,2,3,4,5,6,7,8,9,10]
-        },
-        {
-            D:'4',
-            grids: [1,2,3,4,5,6,7,8,9,10]
-            
-        },
-        {
-            E:'5',
-            grids: [1,2,3,4,5,6,7,8,9,10]
-        },
-        {
-            F:'6',
-            grids: [1,2,3,4,5,6,7,8,9,10]
-        },
-        {
-            G:'7',
-            grids: [1,2,3,4,5,6,7,8,9,10]
-        },
-        {
-            H:'8',
-            grids: [1,2,3,4,5,6,7,8,9,10]
-        },
-        {
-            I:'9',
-            grids: [1,2,3,4,5,6,7,8,9,10]
-        },
-        {
-            J:'10',
-            grids: [1,2,3,4,5,6,7,8,9,10]
-        },
-    
-    
-    ]
+let game1 = GameboardFile.Gameboard()
+game1.genGrid("boardPlayer",game1)
 
-    let cordsadd = function(x,y,ar){
-        let arr = [];
-        arr.push(x,y)
-        ar.push(arr)
-        return ar
-    }
-
-
-    let shipList = []
-    let missedHits = []
-    let destroyedShips = []
-
-    //2.2
-    let placeShip = function(ship){
-        let shipLen = ship.len
-        let yPos = ship.y
-        let xPos = ship.x
-        let shipO = ship.o
-        let checkIndexY = gridCol[yPos-1].grids.indexOf(xPos)
-        let cords = ship.shipCords
-        shipList.push(ship)
-    
-        // y= column
-        // x = item in a column
-
-        //add logic that check if u have enough fields
-        if (shipO == 'v'){
-            if (checkIndexY==-1 || (xPos +shipLen)>11){
-                console.log("taken or too long")
-            }else{
-                for (let a = 0; a<shipLen; a++){
-                    let xPosa = xPos+a
-                    let checkIndexYToCut = gridCol[yPos-1].grids.indexOf(xPosa)
-                    gridCol[yPos-1].grids.splice(checkIndexYToCut,1)
-                    cordsadd(xPosa,yPos,cords)
-
-
-                    //populate left
-                    if(yPos==1){
-                        console.log("cant go to the left")
-                    }else{
-                    let rowleft = gridCol[yPos-2].grids.indexOf(xPosa)
-                    gridCol[yPos-2].grids.splice(rowleft,1)
-                    }
-
-                    //populate right
-                    if (yPos==10){
-                        console.log('cant go to the right')
-                    } else{
-                        let rowright = gridCol[yPos].grids.indexOf(xPosa)
-                        gridCol[yPos].grids.splice(rowright,1)
-                    }
-                }
-                //-1 in same row
-                if (xPos ==1 ){
-                    console.log('cant go higher')
-                }
-                else{
-                    let checkIndexY1sub = gridCol[yPos-1].grids.indexOf(xPos-1)
-                    gridCol[yPos-1].grids.splice(checkIndexY1sub,1)
-                }
-                //+1 in the same row
-                if (xPos + shipLen>10){
-                    console.log("cant go any lower")
-                }else{
-                    let checkIndexY1add = gridCol[yPos-1].grids.indexOf(xPos+shipLen)
-                    gridCol[yPos-1].grids.splice(checkIndexY1add,1)
-                }
-                // to the left -1 +1
-                if (yPos==1){
-                    console.log('cant go to the left')
-                }else{
-                    let checkIndexY1subL = gridCol[yPos-2].grids.indexOf(xPos-1)
-                    gridCol[yPos-2].grids.splice(checkIndexY1subL,1)
-
-                    let checkIndexY1addL = gridCol[yPos-2].grids.indexOf(xPos+shipLen)
-                    gridCol[yPos-2].grids.splice(checkIndexY1addL,1)
-                }
-                //to the right 1- +1
-                if(yPos==10){
-                    console.log("cant go to the right")
-                }else{
-                    let checkIndexY1addR = gridCol[yPos].grids.indexOf(xPos+shipLen)
-                    gridCol[yPos].grids.splice(checkIndexY1addR,1)
-
-                    let checkIndexY1subr = gridCol[yPos].grids.indexOf(xPos-1)
-                    gridCol[yPos].grids.splice(checkIndexY1subr,1)
-                }
-            }
-        } else{
-            if (checkIndexY==-1 || (yPos +shipLen)>11){
-                console.log('too long or taken')
-
-            } else{
-                //take the length of a ship in horz
-                for (let a = 0; a<shipLen; a++){
-                    let yPosa = yPos+a
-                    let checkIndexXToCut = gridCol[yPosa-1].grids.indexOf(xPos)
-                    gridCol[yPosa-1].grids.splice(checkIndexXToCut,1)
-                    cordsadd(yPosa,xPos,cords)
-
-                    //populate row above in same length
-                    if (xPos == 1){
-                        console.log('cant go higher')
-                    } else{
-                        let checkIndexXToCutUp = gridCol[yPosa-1].grids.indexOf(xPos-1)
-                        gridCol[yPosa-1].grids.splice(checkIndexXToCutUp,1)
-                    }
-
-                    //populate row below in same length
-                    if(xPos==10){
-                        console.log("cant go any lower")
-                    } else{
-                        let checkIndextoCutDown = gridCol[yPosa-1].grids.indexOf(xPos+1)
-                        gridCol[yPosa-1].grids.splice(checkIndextoCutDown,1)
-                    }
-                }
-
-                //populate left in same row + 1 -1
-                if(yPos==1){
-                    console.log("cant go to the left")
-                }else{
-
-                let ColLeft = gridCol[yPos-2].grids.indexOf(xPos)
-                gridCol[yPos-2].grids.splice(ColLeft,1)
-
-                let ColLeftadd = gridCol[yPos-2].grids.indexOf(xPos-1)
-                gridCol[yPos-2].grids.splice(ColLeftadd,1)
-
-                let ColLeftsub = gridCol[yPos-2].grids.indexOf(xPos+1)
-                gridCol[yPos-2].grids.splice(ColLeftsub,1)
- 
-                }
-
-                //populate right in the same row +1 -1 
-                if (yPos==10){
-                    console.log('cant go to the right')
-                } else{
-                    let colRight = gridCol[yPos+shipLen-1].grids.indexOf(xPos)
-                    gridCol[yPos+shipLen-1].grids.splice(colRight,1)
-
-                    let colRightadd = gridCol[yPos+shipLen-1].grids.indexOf(xPos-1)
-                    gridCol[yPos+shipLen-1].grids.splice(colRightadd,1)
-
-                    let ColRightsub = gridCol[yPos+shipLen-1].grids.indexOf(xPos+1)
-                    gridCol[yPos+shipLen-1].grids.splice(ColRightsub,1)
-                }    
-            }
-        }
-
-    }
-
-    function isArrayInArray(arr,item){
-        let item_as_string = JSON.stringify(item)
-
-        var contains = arr.some(function(ele){
-            return JSON.stringify(ele) === item_as_string
-        });
-        return contains;
-    }
-
-    let receiveAttack = function(x,y){
-        let checkY = gridCol[y-1]
-        let checkX = gridCol[y-1].grids.indexOf(x)
-        let finalX = gridCol[y-1].grids[checkX]
-        let refList = [y,x]
-
-        if (finalX ==undefined){
-            console.log('ship or space arround ship')
-            for (let a=0; a<shipList.length;a++){
-
-                if (isArrayInArray(shipList[a].shipCords,refList) ==true){
-                    console.log('u hit the ship!')
-                    shipList[a].hit(refList)
-                    if (shipList[a].sunky(refList)==true){
-                        shipList[a].sunk = true
-                        destroyedShips.push(shipList[a])
-                        countDestroyedShips()
-                    }                  
-                }
-            }
-        } else{
-            console.log('miss!')
-            cordsadd(x,y,missedHits)
-        }
-    }
-
-    let countDestroyedShips = function(){
-        if (destroyedShips.length == 5){
-            console.log('all ships has been destroyed')
-        }
-    };
-
-    return {shipList,placeShip,gridCol,receiveAttack, missedHits,destroyedShips}
-}
-// ship len y x o
-let game1 = Gameboard()
+let gameAI = GameboardFile.Gameboard()
+gameAI.genGrid("boardAI",gameAI)
 
 
 
+// AI ships
+//len , X , Y
 
-// ships
+let CarrierAI = ShipFile.Ship(5,4,3,'h')
+gameAI.placeShip(CarrierAI)
+
+let BattleShipAI  = ShipFile.Ship(4,3,5,'h')
+gameAI.placeShip(BattleShipAI)
+
+let CruiserAI = ShipFile.Ship(3,9,6,'v')
+gameAI.placeShip(CruiserAI)
+
+let SubmarineAI = ShipFile.Ship(3,1,1,'v')
+gameAI.placeShip(SubmarineAI)
+
+let DestroyerAI = ShipFile.Ship(2,2,7,'h')
+gameAI.placeShip(DestroyerAI)
+
+// let testAI = ShipFile.Ship(2,2,2,'v')
+// gameAI.placeShip(testAI)
+
+
+// Player ships
+
 
 let Carrier = ShipFile.Ship(5)
 let BattleShip  = ShipFile.Ship(4)
 let Cruiser = ShipFile.Ship(3)
 let Submarine = ShipFile.Ship(3)
-let Destroyer = ShipFile.Ship(2,1,1,'v')
+let Destroyer = ShipFile.Ship(1,5,10,'v')
 
 game1.placeShip(Destroyer)
-game1.receiveAttack(1,1)
+// game1.receiveAttack(1,1)
 // game1.receiveAttack(1,2)
 
 
+
+// let ai = playerFile.Player('AI')
+
+    
+// console.log(ai.shoot(getRandom(1,10),getRandom(1,10)))
+
+
+
+
+
+
+
+//status of your ships
+let genShipGrid = function(playerID){
+    let boardPlayer = document.getElementById(playerID)
+    let shipDiv = document.createElement('div')
+    shipDiv.className = 'shipDiv'
+    boardPlayer.appendChild(shipDiv)
+    for (let a = 0; a<5;a++){
+        let shipGrid = document.createElement('div')
+        shipGrid.className = 'shipGrid'
+        shipDiv.appendChild(shipGrid)
+
+        for(let b = 0 ;b<5;b++){
+            let shipPartDiv = document.createElement('div')
+            shipPartDiv.className = 'shipPart'
+            shipGrid.appendChild(shipPartDiv)
+        }
+    }
+    let shipDivNodes = shipDiv.childNodes
+    shipDivNodes[0].id = 'Carrier'
+    for (let a = 0; a<5;a++){
+        (shipDivNodes[0].childNodes[a].id = 'alive')
+    }
+    
+    shipDivNodes[1].id = 'BattleShip'
+    for (let a = 0; a<4;a++){
+        (shipDivNodes[1].childNodes[a].id = 'alive')
+    }
+    shipDivNodes[2].id = 'Cruiser'
+    for (let a = 0; a<3;a++){
+        (shipDivNodes[2].childNodes[a].id = 'alive')
+    }
+    shipDivNodes[3].id = 'Submarine'
+    for (let a = 0; a<3;a++){
+        (shipDivNodes[3].childNodes[a].id = 'alive')
+    }
+    shipDivNodes[4].id = 'Destroyer'
+    for (let a = 0; a<2;a++){
+        (shipDivNodes[4].childNodes[a].id = 'alive')
+    }
+
+}
+
+
+
+
+
+
+
+// genShipGrid('boardPlayer')
+// let game1 = GameboardFile.Gameboard()
+// console.log(gameAI.shipList[0].o)
+// console.log(gameAI.shipList[0].shipCords)
+// console.log('-----------')
+// console.log(gameAI.shipList[1].o)
+// console.log(gameAI.shipList[1].shipCords)
+
+//colour the ship fields - change the kek name
+// let kek = gameAI.shipList
+// let colorField = function(ship){
+
+//     for (let a=0;a<ship.length;a++){
+//         for(let b=0;b<ship[a].shipCords.length;b++){
+//             let roww = ship[a].shipCords[b][0]
+//             let coll  = ship[a].shipCords[b][1]
+//             let combinee =  `[data--y-x="`+coll+`,`+roww+'"'+']'
+//             let shipfieldd = document.querySelector(combinee)
+//             shipfieldd.dataset.color = 'red'
+//         }
+//     }
+
+
+
+    
+    
+// }
+// colorField(gameAI.shipList)
+
+// color the takenfields of gameboard func
+let colorTakenFields = function(inputBoard){
+
+    if (inputBoard==gameAI){
+
+        for (let a=0; a<inputBoard.takenFields.length;a++){
+
+            let x = inputBoard.takenFields[a][0]
+            let y = inputBoard.takenFields[a][1]
+            let combinee =  `[data--y-x="`+y+`,`+x+'"'+']'
+            let shipfieldd = document.querySelectorAll(combinee)
+            shipfieldd[1].dataset.color = 'taken'
+
+
+        }
+
+        for (let a=0; a<inputBoard.missedHits.length;a++){
+            let x = inputBoard.missedHits[a][0]
+            let y = inputBoard.missedHits[a][1]
+            let combinee =  `[data--y-x="`+y+`,`+x+'"'+']'
+            let shipfieldd = document.querySelectorAll(combinee)
+            shipfieldd[1].dataset.color = 'missed'
+            
+        } 
+
+        for (let a=0;a<inputBoard.shipList.length;a++){
+            for(let b=0;b<inputBoard.shipList[a].shipCords.length;b++){
+                let roww = inputBoard.shipList[a].shipCords[b][0]
+                let coll  = inputBoard.shipList[a].shipCords[b][1]
+                let combinee =  `[data--y-x="`+coll+`,`+roww+'"'+']'
+                let shipfieldd = document.querySelectorAll(combinee)
+                shipfieldd[1].dataset.color = 'ship'
+            }
+        }
+        for (let a=0; a<inputBoard.hittedCords.length;a++){
+
+            let x = inputBoard.hittedCords[a][0]
+            let y = inputBoard.hittedCords[a][1]
+            let combinee =  `[data--y-x="`+y+`,`+x+'"'+']'
+            let shipfieldd = document.querySelectorAll(combinee)
+            shipfieldd[1].dataset.color = 'hitted'
+        }
+ 
+    } else if(inputBoard=game1){
+
+        for (let a=0; a<inputBoard.takenFields.length;a++){
+
+            let x = inputBoard.takenFields[a][0]
+            let y = inputBoard.takenFields[a][1]
+            let combinee =  `[data--y-x="`+y+`,`+x+'"'+']'
+            let shipfieldd = document.querySelectorAll(combinee)
+            shipfieldd[0].dataset.color = 'taken'
+
+
+        }
+
+        for (let a=0; a<inputBoard.missedHits.length;a++){
+            let x = inputBoard.missedHits[a][0]
+            let y = inputBoard.missedHits[a][1]
+            let combinee =  `[data--y-x="`+y+`,`+x+'"'+']'
+            let shipfieldd = document.querySelectorAll(combinee)
+            shipfieldd[0].dataset.color = 'missed'
+            
+        } 
+
+        for (let a=0;a<inputBoard.shipList.length;a++){
+            for(let b=0;b<inputBoard.shipList[a].shipCords.length;b++){
+                let roww = inputBoard.shipList[a].shipCords[b][0]
+                let coll  = inputBoard.shipList[a].shipCords[b][1]
+                let combinee =  `[data--y-x="`+coll+`,`+roww+'"'+']'
+                let shipfieldd = document.querySelectorAll(combinee)
+                shipfieldd[0].dataset.color = 'ship'
+            }
+        }
+        for (let a=0; a<inputBoard.hittedCords.length;a++){
+
+            let x = inputBoard.hittedCords[a][0]
+            let y = inputBoard.hittedCords[a][1]
+            let combinee =  `[data--y-x="`+y+`,`+x+'"'+']'
+            let shipfieldd = document.querySelectorAll(combinee)
+            shipfieldd[0].dataset.color = 'hitted'
+        }
+    }
+
+}
+
+// let colorMissedHits = function(inputBoard){
+
+//     for (let a=0; a<inputBoard.missedHits.length;a++){
+//         let x = inputBoard.missedHits[a][0]
+//         let y = inputBoard.missedHits[a][1]
+//         let combinee =  `[data--y-x="`+y+`,`+x+'"'+']'
+//         let shipfieldd = document.querySelector(combinee)
+//         shipfieldd.dataset.color = 'missed'
+        
+//     } 
+
+// }
+
+let colorHittedCords = function(inputBoard){
+
+}
+
+
+let effe = (function(){
+    colorTakenFields(game1)
+    colorTakenFields(gameAI)
+    console.log(gameAI)
+    // console.log(game1.takenFields)
+    // console.log(gameAI.takenFields)
+    // colorMissedHits(gameAI)
+})();
+
+
+
+let getCords = function(grid,value){
+    let cords = value
+    console.log(cords)
+    return cords
+}
+
+let counter = {counter:0}
+// let countingSteps = function(counter,action){
+//     if (action == 'add'){
+//         counter.counter = 1
+//     } else if(action =='sub'){
+//         counter.counter = 0
+//     }
+// }
+
+
+
+let hover = (function(e){
+    let test = document.querySelectorAll('.board')
+    console.log(test[0])
+    //distingush for highlight for left and right (players AI)
+    let gridRHL = document.querySelectorAll('.gridR')
+
+
+    gridRHL.forEach(function(e){
+
+        e.addEventListener('mouseenter',function(event){
+            if (e.classList!='selected'){
+           e.classList = 'high'
+        }
+        })
+        e.addEventListener('mouseleave',function(event){
+            if (e.classList!='selected'){
+            e.classList = "gridR"
+            }
+        })
+
+        e.addEventListener("click",function(event){
+
+            if(counter.counter==0){
+            e.classList = 'selected'
+            counter.counter++
+            let cords2shoot = e.dataset["YX"]
+// if grid of AI than update AI grid with values and trigger shoot with shoot function
+
+            let x = e.dataset['X']
+            let y = e.dataset['Y']
+
+            gameAI.targetShoot(x,y)
+            console.log(gameAI.tempShoot) 
+            
+        }else{
+        }
+        })
+    })
+
+})();
+
+
+let shootButton = document.getElementById('shoot')
+shootButton.addEventListener('click',function(){
+
+    // setup the way that the users can switch the shooting stuff
+
+    let x = gameAI.tempShoot[0]
+    let y = gameAI.tempShoot[1]
+    console.log(gameAI.tempShoot) 
+    gameAI.tempShoot.pop()
+    gameAI.tempShoot.pop()
+    console.log(gameAI.tempShoot) 
+    gameAI.receiveAttack(x,y)
+
+    let selectedErease = document.querySelector('.selected').classList = 'gridR'
+    counter.counter=0
+    colorTakenFields(gameAI)
+
+    // console.log(gameAI)
+
+})
+
+
+let upButton = document.getElementById('up')
+upButton.addEventListener('click',function(){
+    // console.log(gameAI.shipList[0].shipCords)
+    // console.log(gameAI.shipList[0].hittedCords)
+    // console.log(gameAI.missedHits)
+})
+
+
+
+// let eff = (function(){
+//     console.log(gameAI.shipList[0].shipCords)
+//     console.log(gameAI.shipList[0].hittedCords)
+// })();

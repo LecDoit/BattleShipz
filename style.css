@@ -1,0 +1,112 @@
+*{
+    border: 1px solid magenta;
+    color: magenta;
+}
+body{
+    background-color: blue;
+}
+
+#boardgames{
+    display: grid;
+    gap: 50px;
+    grid-template-columns: 1fr 1fr;
+}
+
+#boardPlayer, #boardAI{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    background-color: blueviolet;
+}
+.boardTop{
+    display: grid;
+    grid-template-columns: repeat(10,1fr);
+    grid-column-start: 2;
+    grid-column-end: 2;
+    grid-row-start:1 ;
+    grid-row-end:1 ;
+    
+
+}
+
+.boardLeft{
+    display: grid;
+    grid-column-start: 1;
+    grid-column-end: 1;
+    grid-row-start:2 ;
+    grid-row-end:2 ;
+    grid-template-rows: repeat(10,1fr);
+
+
+}
+.board{
+    display: grid;
+    grid-template-rows: repeat(10,1fr);
+    grid-column-start: 2;
+    grid-column-start:2;
+    grid-row-start:2 ;
+    grid-row-end:2 ;
+
+}
+.gridR{
+    display: grid;
+
+}
+
+.gridC{
+    display: grid;
+    grid-template-columns: repeat(10,1fr);
+}
+
+.shipDiv{
+    display: grid;
+    grid-template-rows: repeat(5,1fr);
+}
+.shipGrid{
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+}
+
+#alive{
+    background-color: rgba(255, 0, 255, 0.596);
+}
+
+[data-color="ship"]{
+    background-color: black;
+}
+[data-color="taken"]{
+    background-color: rgb(191, 0, 255)
+}
+[data-color="missed"]{
+    background-color: blue
+}
+[data-color="hitted"]{
+    background-color: rgb(255, 0, 0)
+}
+
+
+#nav{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    
+
+}
+
+.high{
+    background-color: white;
+}
+/* #button{
+    width: 10px;
+    height: 10px;
+} */
+
+.selected{
+    background-color: yellow;
+}
+
+.shoot{
+    background-color: rgb(243, 123, 123);
+    color: white;
+}
+
