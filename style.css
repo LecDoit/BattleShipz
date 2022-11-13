@@ -13,6 +13,8 @@ body{
 
 }
 
+
+
 #boardgames{
     display: grid;
     gap: 50px;
@@ -83,6 +85,9 @@ body{
     background-color: rgba(255, 0, 255, 0.596);
 }
 
+/* .selected{
+    background-color: yellow;
+} */
 [data-color="ship"]{
     background-color: black;
 }
@@ -94,6 +99,9 @@ body{
 }
 [data-color="hitted"]{
     background-color: rgb(255, 0, 0)
+}
+[data-color="selected"]{
+    background-color: yellow
 }
 
 
@@ -113,12 +121,11 @@ body{
     height: 10px;
 } */
 
-.selected{
-    background-color: yellow;
-}
+
 
 .shoot{
     background-color: rgb(243, 123, 123);
     color: white;
 }
+
 

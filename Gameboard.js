@@ -326,8 +326,9 @@ let Gameboard = function(ships){
     }
 
     let countDestroyedShips = function(){
-        if (destroyedShips.length == 5){
+        if (destroyedShips.length == 1){
             console.log('all ships has been destroyed')
+            alert('you Won!')
         }
     };
 

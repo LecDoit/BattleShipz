@@ -10,14 +10,21 @@ let getRandom = function(min,max){
 
 //      2 Gameboard
 let gameAI 
-let start_button = document.getElementById('start--button')
+let game1
 
-let startGame = {start:false}
+
+
+let startGame = {start:false,
+                    turn:true}
 let setStartGameTrue = function(obj,val){
     return obj.start = val
 }
 
 let counterGrid = {counter:0}
+let Shoovtounter = {counter:0}
+
+
+let start_button = document.getElementById('start--button')
 start_button.addEventListener('click',function(){
     let counter = {counter:0}
     let game1 = GameboardFile.Gameboard()
@@ -51,7 +58,6 @@ start_button.addEventListener('click',function(){
             colorTakenFields(game1,"game1")  
             counter.counter++
             e.parentElement.classList.add('hidden')
-            console.log(e.parentElement)
 
         } else if (idVal =='Cruiser'){
             let Cruiser = ShipFile.Ship(3,xVal,yVal,oVal)
@@ -80,39 +86,88 @@ start_button.addEventListener('click',function(){
             gameAI = GameboardFile.Gameboard()
             gameAI.genGrid("boardAI",gameAI)
             
-            let CarrierAI = ShipFile.Ship(5,4,3,'h')
-            gameAI.placeShip(CarrierAI)
+            // let CarrierAI = ShipFile.Ship(5,4,3,'h')
+            // gameAI.placeShip(CarrierAI)
             
-            let BattleShipAI  = ShipFile.Ship(4,3,5,'h')
-            gameAI.placeShip(BattleShipAI)
+            // let BattleShipAI  = ShipFile.Ship(4,3,5,'h')
+            // gameAI.placeShip(BattleShipAI)
             
-            let CruiserAI = ShipFile.Ship(3,9,6,'v')
-            gameAI.placeShip(CruiserAI)
+            // let CruiserAI = ShipFile.Ship(3,9,6,'v')
+            // gameAI.placeShip(CruiserAI)
             
-            let SubmarineAI = ShipFile.Ship(3,1,1,'v')
-            gameAI.placeShip(SubmarineAI)
+            // let SubmarineAI = ShipFile.Ship(3,1,1,'v')
+            // gameAI.placeShip(SubmarineAI)
             
             let DestroyerAI = ShipFile.Ship(2,2,7,'h')
             gameAI.placeShip(DestroyerAI)
             colorTakenFields(gameAI,"gameAI")  
-            hoverAI(gameAI)
- 
-
+            hoverAI()
+            startGame.start = true
         }
 
         })
     })
 
+    let upButton = document.getElementById('up')
+    upButton.addEventListener('click',function(){
+        let randX = getRandom(1,10)
+        let randY = getRandom(1,10)
+        let randHL = document.querySelector("[data--y-x="+`"`+randY+","+randX+`"`+"]")
+        randHL.classList.add('selected')
+        game1.receiveAttack((randX),(randY))
+        colorTakenFields(game1,'game1')
 
 
+
+   
+    })
+
+    let rolling = function(){
+        if (startGame.start==true){
+         if (startGame.turn==false)  {
+            let randX = getRandom(1,10)
+            let randY = getRandom(1,10)
+            let randHL = document.querySelector("[data--y-x="+`"`+randY+","+randX+`"`+"]")
+            randHL.classList.add('selected')
+            game1.receiveAttack(randX,randY)
+            colorTakenFields(game1,'game1')
+            colorTakenFields(gameAI,'gameAI')
+            startGame.turn=true
+            // hoverAI()
+         }
+        }
+    }
+
+    let shootButton = document.getElementById('shoot')
+    shootButton.addEventListener('click',function(){
+        let x = gameAI.tempShoot[0]
+        let y = gameAI.tempShoot[1]
+        gameAI.tempShoot.pop()
+        gameAI.tempShoot.pop()
+        gameAI.receiveAttack(x,y)
+        // let selectedErease = document.querySelector('.selected').classList = 'gridR'
+        Shoovtounter.counter=0
+        // hoverAI()
+        colorTakenFields(gameAI,'gameAI')
+        colorTakenFields(game1,'game1')
+        startGame.turn = false
+        rolling()
+
+
+    })
+
+    let rightButton = document.querySelector('#right')
+    rightButton.addEventListener('click',function(){
+        console.log(counter)
+    })
 })
+
+
 
 
 let hoverAI = function(){
 
     let gridRHL = document.querySelectorAll('.gridR_boardAI')
-
-
     gridRHL.forEach(function(e){
 
         e.addEventListener('mouseenter',function(event){
@@ -128,9 +183,10 @@ let hoverAI = function(){
 
         e.addEventListener("click",function(event){
 
-            if(counter.counter==0){
+            if(Shoovtounter.counter==0){
             e.classList = 'selected'
-            counter.counter++
+            e.dataset.color='selected'
+            Shoovtounter.counter++
             let cords2shoot = e.dataset["YX"]
 // if grid of AI than update AI grid with values and trigger shoot with shoot function
 
@@ -140,32 +196,13 @@ let hoverAI = function(){
 
             
         }else{
+            console.log(Shoovtounter.counter)
         }
         })
     })
 
 };
 
-let shootButton = document.getElementById('shoot')
-shootButton.addEventListener('click',function(){
-
-    // setup the way that the users can switch the shooting stuff
-
-    let x = gameAI.tempShoot[0]
-    let y = gameAI.tempShoot[1]
-    console.log(gameAI.tempShoot) 
-    gameAI.tempShoot.pop()
-    gameAI.tempShoot.pop()
-    console.log(gameAI.tempShoot) 
-    gameAI.receiveAttack(x,y)
-
-    let selectedErease = document.querySelector('.selected').classList = 'gridR'
-    counter.counter=0
-    colorTakenFields(gameAI,'gameAI')
-
-    // console.log(gameAI)
-
-})
 
 //colour the ship fields - change the kek name
 // let kek = gameAI.shipList
@@ -182,8 +219,8 @@ shootButton.addEventListener('click',function(){
 //     }   
 // }
 // colorField(gameAI.shipList)
-
 // color the takenfields of gameboard func
+
 let colorTakenFields = function(inputBoard,name){
 
     if (name=="gameAI"){
@@ -289,7 +326,7 @@ let getCords = function(grid,value){
     return cords
 }
 
-let counter = {counter:0}
+
 // let countingSteps = function(counter,action){
 //     if (action == 'add'){
 //         counter.counter = 1
@@ -303,28 +340,10 @@ let counter = {counter:0}
 
 
 
-
-
-
-
-// let upButton = document.getElementById('up')
-// upButton.addEventListener('click',function(){
-//     // console.log(gameAI.shipList[0].shipCords)
-//     // console.log(gameAI.shipList[0].hittedCords)
-//     // console.log(gameAI.missedHits)
-// })
-
-
-
 // let eff = (function(){
 //     console.log(gameAI.shipList[0].shipCords)
 //     console.log(gameAI.shipList[0].hittedCords)
 // })();
-
-
-// 1st step of your game placeships on your grid 
-// create start button 
-
 
 
 
@@ -341,8 +360,3 @@ let counter = {counter:0}
 // }
 
 // })();
-
-
-
-
-
