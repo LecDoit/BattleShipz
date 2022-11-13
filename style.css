@@ -6,6 +6,13 @@ body{
     background-color: blue;
 }
 
+
+.hidden{
+    /* display: grid; */
+   display: none;
+
+}
+
 #boardgames{
     display: grid;
     gap: 50px;
@@ -48,12 +55,12 @@ body{
     grid-row-end:2 ;
 
 }
-.gridR{
+.gridR_boardAI, .gridR_boardPlayer{
     display: grid;
 
 }
 
-.gridC{
+.gridC_boardAI, .gridC_boardPlayer{
     display: grid;
     grid-template-columns: repeat(10,1fr);
 }
@@ -64,7 +71,12 @@ body{
 }
 .shipGrid{
     display: grid;
+    grid-template-rows: 1fr 1fr;
+}
+.topShip{
+    display: grid;
     grid-template-columns: repeat(5,1fr);
+
 }
 
 #alive{

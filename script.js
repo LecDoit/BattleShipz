@@ -9,119 +9,163 @@ let getRandom = function(min,max){
 
 
 //      2 Gameboard
+let gameAI 
+let start_button = document.getElementById('start--button')
 
-
-let game1 = GameboardFile.Gameboard()
-game1.genGrid("boardPlayer",game1)
-
-let gameAI = GameboardFile.Gameboard()
-gameAI.genGrid("boardAI",gameAI)
-
-
-
-// AI ships
-//len , X , Y
-
-let CarrierAI = ShipFile.Ship(5,4,3,'h')
-gameAI.placeShip(CarrierAI)
-
-let BattleShipAI  = ShipFile.Ship(4,3,5,'h')
-gameAI.placeShip(BattleShipAI)
-
-let CruiserAI = ShipFile.Ship(3,9,6,'v')
-gameAI.placeShip(CruiserAI)
-
-let SubmarineAI = ShipFile.Ship(3,1,1,'v')
-gameAI.placeShip(SubmarineAI)
-
-let DestroyerAI = ShipFile.Ship(2,2,7,'h')
-gameAI.placeShip(DestroyerAI)
-
-// let testAI = ShipFile.Ship(2,2,2,'v')
-// gameAI.placeShip(testAI)
-
-
-// Player ships
-
-
-let Carrier = ShipFile.Ship(5)
-let BattleShip  = ShipFile.Ship(4)
-let Cruiser = ShipFile.Ship(3)
-let Submarine = ShipFile.Ship(3)
-let Destroyer = ShipFile.Ship(1,5,10,'v')
-
-game1.placeShip(Destroyer)
-// game1.receiveAttack(1,1)
-// game1.receiveAttack(1,2)
-
-
-
-// let ai = playerFile.Player('AI')
-
-    
-// console.log(ai.shoot(getRandom(1,10),getRandom(1,10)))
-
-
-
-
-
-
-
-//status of your ships
-let genShipGrid = function(playerID){
-    let boardPlayer = document.getElementById(playerID)
-    let shipDiv = document.createElement('div')
-    shipDiv.className = 'shipDiv'
-    boardPlayer.appendChild(shipDiv)
-    for (let a = 0; a<5;a++){
-        let shipGrid = document.createElement('div')
-        shipGrid.className = 'shipGrid'
-        shipDiv.appendChild(shipGrid)
-
-        for(let b = 0 ;b<5;b++){
-            let shipPartDiv = document.createElement('div')
-            shipPartDiv.className = 'shipPart'
-            shipGrid.appendChild(shipPartDiv)
-        }
-    }
-    let shipDivNodes = shipDiv.childNodes
-    shipDivNodes[0].id = 'Carrier'
-    for (let a = 0; a<5;a++){
-        (shipDivNodes[0].childNodes[a].id = 'alive')
-    }
-    
-    shipDivNodes[1].id = 'BattleShip'
-    for (let a = 0; a<4;a++){
-        (shipDivNodes[1].childNodes[a].id = 'alive')
-    }
-    shipDivNodes[2].id = 'Cruiser'
-    for (let a = 0; a<3;a++){
-        (shipDivNodes[2].childNodes[a].id = 'alive')
-    }
-    shipDivNodes[3].id = 'Submarine'
-    for (let a = 0; a<3;a++){
-        (shipDivNodes[3].childNodes[a].id = 'alive')
-    }
-    shipDivNodes[4].id = 'Destroyer'
-    for (let a = 0; a<2;a++){
-        (shipDivNodes[4].childNodes[a].id = 'alive')
-    }
-
+let startGame = {start:false}
+let setStartGameTrue = function(obj,val){
+    return obj.start = val
 }
 
+let counterGrid = {counter:0}
+start_button.addEventListener('click',function(){
+    let counter = {counter:0}
+    let game1 = GameboardFile.Gameboard()
+    if (counterGrid.counter==0){
+
+        game1.genGrid("boardPlayer",game1)
+        game1.genShipGrid('ships--containter')
+
+    }
+    counterGrid.counter++
+    let placeButton = document.querySelectorAll('.place--button')
+    placeButton.forEach(function(e){
+    e.addEventListener('click',function(){
+        let xVal = Number(e.parentElement.childNodes[1].value)
+        let yVal = Number(e.parentElement.childNodes[3].value)
+        let oVal = e.parentElement.childNodes[5].value
+        let idVal = e.parentElement.parentElement.childNodes[0].id
+       
+        if(idVal=='Carrier'){
+            // console.log(xVal,yVal,oVal)
+            let Carrier = ShipFile.Ship(5,xVal,yVal,oVal)
+            game1.placeShip(Carrier)
+            colorTakenFields(game1,"game1") 
+            counter.counter++
+            e.parentElement.classList.add('hidden')
+   
+
+        } else if (idVal =='BattleShip'){
+            let BattleShip = ShipFile.Ship(4,xVal,yVal,oVal)
+            game1.placeShip(BattleShip)
+            colorTakenFields(game1,"game1")  
+            counter.counter++
+            e.parentElement.classList.add('hidden')
+            console.log(e.parentElement)
+
+        } else if (idVal =='Cruiser'){
+            let Cruiser = ShipFile.Ship(3,xVal,yVal,oVal)
+            game1.placeShip(Cruiser)
+            colorTakenFields(game1,"game1") 
+            counter.counter++
+            e.parentElement.classList.add('hidden')
+
+        } else if (idVal =='Submarine'){
+            let Submarine = ShipFile.Ship(3,xVal,yVal,oVal)
+            game1.placeShip(Submarine)
+            colorTakenFields(game1,"game1")
+            counter.counter++
+            e.parentElement.classList.add('hidden')
+
+        } else if (idVal =='Destroyer'){
+            let Destroyer = ShipFile.Ship(2,xVal,yVal,oVal)
+            game1.placeShip(Destroyer)
+            colorTakenFields(game1,"game1")  
+            counter.counter++
+            e.parentElement.classList.add('hidden')
+
+        }
+
+        if (counter.counter==5){
+            gameAI = GameboardFile.Gameboard()
+            gameAI.genGrid("boardAI",gameAI)
+            
+            let CarrierAI = ShipFile.Ship(5,4,3,'h')
+            gameAI.placeShip(CarrierAI)
+            
+            let BattleShipAI  = ShipFile.Ship(4,3,5,'h')
+            gameAI.placeShip(BattleShipAI)
+            
+            let CruiserAI = ShipFile.Ship(3,9,6,'v')
+            gameAI.placeShip(CruiserAI)
+            
+            let SubmarineAI = ShipFile.Ship(3,1,1,'v')
+            gameAI.placeShip(SubmarineAI)
+            
+            let DestroyerAI = ShipFile.Ship(2,2,7,'h')
+            gameAI.placeShip(DestroyerAI)
+            colorTakenFields(gameAI,"gameAI")  
+            hoverAI(gameAI)
+ 
+
+        }
+
+        })
+    })
 
 
 
+})
 
 
+let hoverAI = function(){
 
-// genShipGrid('boardPlayer')
-// let game1 = GameboardFile.Gameboard()
-// console.log(gameAI.shipList[0].o)
-// console.log(gameAI.shipList[0].shipCords)
-// console.log('-----------')
-// console.log(gameAI.shipList[1].o)
-// console.log(gameAI.shipList[1].shipCords)
+    let gridRHL = document.querySelectorAll('.gridR_boardAI')
+
+
+    gridRHL.forEach(function(e){
+
+        e.addEventListener('mouseenter',function(event){
+            if (e.classList!='selected'){
+           e.classList = 'high'
+        }
+        })
+        e.addEventListener('mouseleave',function(event){
+            if (e.classList!='selected'){
+            e.classList = "gridR"
+            }
+        })
+
+        e.addEventListener("click",function(event){
+
+            if(counter.counter==0){
+            e.classList = 'selected'
+            counter.counter++
+            let cords2shoot = e.dataset["YX"]
+// if grid of AI than update AI grid with values and trigger shoot with shoot function
+
+            let x = e.dataset['X']
+            let y = e.dataset['Y']
+            gameAI.targetShoot(x,y)
+
+            
+        }else{
+        }
+        })
+    })
+
+};
+
+let shootButton = document.getElementById('shoot')
+shootButton.addEventListener('click',function(){
+
+    // setup the way that the users can switch the shooting stuff
+
+    let x = gameAI.tempShoot[0]
+    let y = gameAI.tempShoot[1]
+    console.log(gameAI.tempShoot) 
+    gameAI.tempShoot.pop()
+    gameAI.tempShoot.pop()
+    console.log(gameAI.tempShoot) 
+    gameAI.receiveAttack(x,y)
+
+    let selectedErease = document.querySelector('.selected').classList = 'gridR'
+    counter.counter=0
+    colorTakenFields(gameAI,'gameAI')
+
+    // console.log(gameAI)
+
+})
 
 //colour the ship fields - change the kek name
 // let kek = gameAI.shipList
@@ -135,19 +179,14 @@ let genShipGrid = function(playerID){
 //             let shipfieldd = document.querySelector(combinee)
 //             shipfieldd.dataset.color = 'red'
 //         }
-//     }
-
-
-
-    
-    
+//     }   
 // }
 // colorField(gameAI.shipList)
 
 // color the takenfields of gameboard func
-let colorTakenFields = function(inputBoard){
+let colorTakenFields = function(inputBoard,name){
 
-    if (inputBoard==gameAI){
+    if (name=="gameAI"){
 
         for (let a=0; a<inputBoard.takenFields.length;a++){
 
@@ -187,7 +226,7 @@ let colorTakenFields = function(inputBoard){
             shipfieldd[1].dataset.color = 'hitted'
         }
  
-    } else if(inputBoard=game1){
+    } else if(name=="game1"){
 
         for (let a=0; a<inputBoard.takenFields.length;a++){
 
@@ -243,21 +282,6 @@ let colorTakenFields = function(inputBoard){
 
 // }
 
-let colorHittedCords = function(inputBoard){
-
-}
-
-
-let effe = (function(){
-    colorTakenFields(game1)
-    colorTakenFields(gameAI)
-    console.log(gameAI)
-    // console.log(game1.takenFields)
-    // console.log(gameAI.takenFields)
-    // colorMissedHits(gameAI)
-})();
-
-
 
 let getCords = function(grid,value){
     let cords = value
@@ -276,76 +300,19 @@ let counter = {counter:0}
 
 
 
-let hover = (function(e){
-    let test = document.querySelectorAll('.board')
-    console.log(test[0])
-    //distingush for highlight for left and right (players AI)
-    let gridRHL = document.querySelectorAll('.gridR')
 
 
-    gridRHL.forEach(function(e){
-
-        e.addEventListener('mouseenter',function(event){
-            if (e.classList!='selected'){
-           e.classList = 'high'
-        }
-        })
-        e.addEventListener('mouseleave',function(event){
-            if (e.classList!='selected'){
-            e.classList = "gridR"
-            }
-        })
-
-        e.addEventListener("click",function(event){
-
-            if(counter.counter==0){
-            e.classList = 'selected'
-            counter.counter++
-            let cords2shoot = e.dataset["YX"]
-// if grid of AI than update AI grid with values and trigger shoot with shoot function
-
-            let x = e.dataset['X']
-            let y = e.dataset['Y']
-
-            gameAI.targetShoot(x,y)
-            console.log(gameAI.tempShoot) 
-            
-        }else{
-        }
-        })
-    })
-
-})();
 
 
-let shootButton = document.getElementById('shoot')
-shootButton.addEventListener('click',function(){
-
-    // setup the way that the users can switch the shooting stuff
-
-    let x = gameAI.tempShoot[0]
-    let y = gameAI.tempShoot[1]
-    console.log(gameAI.tempShoot) 
-    gameAI.tempShoot.pop()
-    gameAI.tempShoot.pop()
-    console.log(gameAI.tempShoot) 
-    gameAI.receiveAttack(x,y)
-
-    let selectedErease = document.querySelector('.selected').classList = 'gridR'
-    counter.counter=0
-    colorTakenFields(gameAI)
-
-    // console.log(gameAI)
-
-})
 
 
-let upButton = document.getElementById('up')
-upButton.addEventListener('click',function(){
-    // console.log(gameAI.shipList[0].shipCords)
-    // console.log(gameAI.shipList[0].hittedCords)
-    // console.log(gameAI.missedHits)
-})
+
+// let upButton = document.getElementById('up')
+// upButton.addEventListener('click',function(){
+//     // console.log(gameAI.shipList[0].shipCords)
+//     // console.log(gameAI.shipList[0].hittedCords)
+//     // console.log(gameAI.missedHits)
+// })
 
 
 
@@ -353,3 +320,29 @@ upButton.addEventListener('click',function(){
 //     console.log(gameAI.shipList[0].shipCords)
 //     console.log(gameAI.shipList[0].hittedCords)
 // })();
+
+
+// 1st step of your game placeships on your grid 
+// create start button 
+
+
+
+
+
+// u shoot first 
+// than ai turn to shoot
+
+// let effe = (function(){
+//     if (startGame.start=true){
+
+//     } else {
+//     colorTakenFields(game1,"game1")
+//     colorTakenFields(gameAI,"gameAI")
+// }
+
+// })();
+
+
+
+
+

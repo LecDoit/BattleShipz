@@ -93,7 +93,7 @@ let Gameboard = function(ships){
 
                     //populate above in the same spot
                     if(yPos==1){
-                        console.log("^ cant go higher on Y")
+                        // console.log(" cant go higher on Y")
                     }else{
                     let rowleft = gridCol[yPos-2].grids.indexOf(xPosa)
                     gridCol[yPos-2].grids.splice(rowleft,1)
@@ -102,7 +102,7 @@ let Gameboard = function(ships){
 
                     //populate below in the same spot
                     if (yPos==10){
-                        console.log('v cant go lower on Y')
+                        // console.log('v cant go lower on Y')
                     } else{
                         let rowright = gridCol[yPos].grids.indexOf(xPosa)
                         let b = gridCol[yPos].grids.splice(rowright,1)
@@ -115,7 +115,7 @@ let Gameboard = function(ships){
             // SAME SPOTS
                 // -1 on x in the same spot Y
                 if (xPos ==1 ){
-                    console.log('<- cant go further to the left on X to -1')
+                    // console.log('<- cant go further to the left on X to -1')
                 }
                 else{
                     let checkIndexY1sub = gridCol[yPos-1].grids.indexOf(xPos-1)
@@ -125,7 +125,7 @@ let Gameboard = function(ships){
 
                 // +1 on x in the same spot Y
                 if (xPos + shipLen>10){
-                    console.log("-> cant go further to the right on X to +1")
+                    // console.log("-> cant go further to the right on X to +1")
                 }else{
                     let checkIndexY1add = gridCol[yPos-1].grids.indexOf(xPos+shipLen)
                     gridCol[yPos-1].grids.splice(checkIndexY1add,1)
@@ -136,14 +136,14 @@ let Gameboard = function(ships){
             
                 // above Y -1 of x and  +1
                 if (yPos==1){
-                    console.log('^ cant go higher on Y to -1')
+                    // console.log('^ cant go higher on Y to -1')
                 }else{
                     if (xPos ==1){
-                        console.log('Y-1 and X-1 is not possible')
+                        // console.log('Y-1 and X-1 is not possible')
                     } else{
 
                     if(xPos==10){
-                        console.log('Y-1 and X+1 is not possible')
+                        // console.log('Y-1 and X+1 is not possible')
                     }else{  
                     let checkIndexY1subL = gridCol[yPos-2].grids.indexOf(xPos-1)
                     gridCol[yPos-2].grids.splice(checkIndexY1subL,1)
@@ -159,10 +159,10 @@ let Gameboard = function(ships){
                 
                 //below Y -1 of x and  +1
                 if(yPos==10){
-                    console.log("v cant go lower on Y to +1")
+                    // console.log("v cant go lower on Y to +1")
                 }else{
                     if (xPos ==1){
-                        console.log('Y-1 and X-1 is not possible')
+                        // console.log('Y-1 and X-1 is not possible')
                     } else{
                     let checkIndexY1subr = gridCol[yPos].grids.indexOf(xPos-1)
                     gridCol[yPos].grids.splice(checkIndexY1subr,1)
@@ -170,7 +170,7 @@ let Gameboard = function(ships){
                     cordsadd(xPos-1,yPos+1,takenFields)
                     }
                     if(xPos==10){
-                        console.log('Y-1 and X+1 is not possible')
+                        // console.log('Y-1 and X+1 is not possible')
                     }else{
 
                     let checkIndexY1addR = gridCol[yPos].grids.indexOf(xPos+shipLen)
@@ -183,7 +183,7 @@ let Gameboard = function(ships){
             }
         } else{
             if (checkIndexY==-1 || (yPos +shipLen)>11){
-                console.log('too long or taken')
+                // console.log('too long or taken')
 
             } else{
                 //take the length of a ship in vert
@@ -200,7 +200,7 @@ let Gameboard = function(ships){
 
                     //populate the column on the left -1
                     if (xPos == 1){
-                        console.log('<- cant go further to the left on x')
+                        // console.log('<- cant go further to the left on x')
                     } else{
                         let checkIndexXToCutUp = gridCol[yPosa-1].grids.indexOf(xPos-1)
                         gridCol[yPosa-1].grids.splice(checkIndexXToCutUp,1)
@@ -210,7 +210,7 @@ let Gameboard = function(ships){
 
                     //populate the column on the right +1
                     if(xPos==10){
-                        console.log("-> cant go further to the right on x'")
+                        // console.log("-> cant go further to the right on x'")
                     } else{
                         let checkIndextoCutDown = gridCol[yPosa-1].grids.indexOf(xPos+1)
                         gridCol[yPosa-1].grids.splice(checkIndextoCutDown,1)
@@ -220,7 +220,7 @@ let Gameboard = function(ships){
 
                 //populate above in same X spot
                 if(yPos==1){
-                    console.log("^ cant go higher  on Y - 1")
+                    // console.log("^ cant go higher  on Y - 1")
                 }else{
 
                 let ColLeft = gridCol[yPos-2].grids.indexOf(xPos)
@@ -230,7 +230,7 @@ let Gameboard = function(ships){
                 cordsadd(xPos,yPos-1,takenFields)
 
                 if(xPos==1){
-                    console.log('Y-1 and X-1 is not possible')
+                    // console.log('Y-1 and X-1 is not possible')
                 }else{
 
                 let ColLeftadd = gridCol[yPos-2].grids.indexOf(xPos-1)
@@ -240,7 +240,7 @@ let Gameboard = function(ships){
                 }
 
                 if(xPos==10){
-                    console.log('Y-1 and X+1 is not possible')
+                    // console.log('Y-1 and X+1 is not possible')
                 }else{
                 let ColLeftsub = gridCol[yPos-2].grids.indexOf(xPos+1)
                 gridCol[yPos-2].grids.splice(ColLeftsub,1)
@@ -250,14 +250,14 @@ let Gameboard = function(ships){
 
                 //populate below in the same row +1 -1 
                 if (yPos==10){
-                    console.log('v cant go lower to the right on Y + 1"')
+                    // console.log('v cant go lower to the right on Y + 1"')
                 } else{
                     let colRight = gridCol[yPos+shipLen-1].grids.indexOf(xPos)
                     gridCol[yPos+shipLen-1].grids.splice(colRight,1)
                     cordsadd(xPos,yPos+shipLen,takenFields)
 
                     if(xPos==1){
-                        console.log('Y+1 and X-1 is not possible')
+                        // console.log('Y+1 and X-1 is not possible')
                     }else{
                     let colRightadd = gridCol[yPos+shipLen-1].grids.indexOf(xPos-1)
                     gridCol[yPos+shipLen-1].grids.splice(colRightadd,1)
@@ -265,7 +265,7 @@ let Gameboard = function(ships){
                     }
 
                     if(xPos==10){
-                        console.log('Y+1 and X+1 is not possible')
+                        // console.log('Y+1 and X+1 is not possible')
                     }else{
                     let ColRightsub = gridCol[yPos+shipLen-1].grids.indexOf(xPos+1)
                     gridCol[yPos+shipLen-1].grids.splice(ColRightsub,1)
@@ -350,7 +350,7 @@ let Gameboard = function(ships){
         for (let a = 0; a < 10;a++ ){
             let game1DivC = document.createElement('div')
             game1DivC.id = 'gridC'+(a+1)
-            game1DivC.className = 'gridC'
+            game1DivC.className = 'gridC_'+playerID
             
             // game1DivC.innerHTML = a+1
             board.appendChild(game1DivC)
@@ -358,7 +358,7 @@ let Gameboard = function(ships){
             for (let b=0; b<10 ; b++){
                 let game1DivR = document.createElement('div')
                 game1DivR.id = b+1
-                game1DivR.className = 'gridR'
+                game1DivR.className = 'gridR_'+playerID
                 // game1DivR.innerHTML = ' _' 
                 game1DivC.appendChild(game1DivR) 
                 game1DivR.dataset.Y = a+1
@@ -388,8 +388,130 @@ let Gameboard = function(ships){
         }
     })
 
+    //status of your ships
+    let genShipGrid = function(playerID){
+    let boardPlayer = document.getElementById(playerID)
+    let shipDiv = document.createElement('div')
+    shipDiv.className = 'shipDiv'
+    boardPlayer.appendChild(shipDiv)
+
+    for (let a = 0; a<5;a++){
+        let shipGrid = document.createElement('div')
+        shipGrid.className = 'shipGrid'
+        let cordsDiv = document.createElement('div')
+        cordsDiv.className = 'cordsDiv'
+
+        shipDiv.appendChild(shipGrid)
+
+
+        let topShip = document.createElement('div')
+        topShip.className = 'topShip'
+        let bottomNav = document.createElement('div')
+        bottomNav.className = 'bottomNav'
+        shipGrid.appendChild(topShip)
+        shipGrid.appendChild(bottomNav)
+
+
+
+        let xSet = document.createElement('select')
+        let xSetLabel = document.createElement('label')
+        xSet.setAttribute('type','number')
+        xSet.setAttribute('min','1')
+        xSet.setAttribute('max','10')
+        xSet.setAttribute('placeholder','1')
+        xSetLabel.textContent='X'
+
+        let ySet = document.createElement('select')
+        let ySetLabel = document.createElement('label')
+        ySet.setAttribute('type','number')
+        ySet.setAttribute('min','1')
+        ySet.setAttribute('max','10')
+        ySet.setAttribute('placeholder','1')
+        ySetLabel.textContent='Y'
+
+        let oSet = document.createElement('select')
+        let oSetLabel = document.createElement('label')
+        oSet.setAttribute('type','number')
+        
+        oSet.setAttribute('placeholder','Vertical')
+        oSetLabel.textContent='Orientation'
+
+        bottomNav.appendChild(xSetLabel)
+        bottomNav.appendChild(xSet)
+
+        bottomNav.appendChild(ySetLabel)
+        bottomNav.appendChild(ySet)
+
+        bottomNav.appendChild(oSetLabel)
+        bottomNav.appendChild(oSet)
+
+        let placeButton = document.createElement('button')
+        placeButton.textContent = 'Place Ship'
+
+        placeButton.id ='place--button'+a
+        placeButton.className ='place--button'
+        bottomNav.appendChild(placeButton)
+
+        for (let numb = 1;numb<11;numb++){
+        let xSetOption = document.createElement('option')
+        let ySetOption = document.createElement('option')
+
+        xSetOption.setAttribute('value',numb)
+        ySetOption.setAttribute('value',numb)
+
+        xSetOption.text=numb
+        ySetOption.text=numb
+
+        xSet.appendChild(xSetOption)
+        ySet.appendChild(ySetOption)
+        }
+        
+        let oSetOptionV = document.createElement('option')
+        let oSetOptionH = document.createElement('option')
+        oSetOptionV.setAttribute('value','v')
+        oSetOptionH.setAttribute('value','h')
+        oSetOptionV.text='v'
+        oSetOptionH.text='h'
+        oSet.appendChild(oSetOptionH)
+        oSet.appendChild(oSetOptionV)
+
+        for(let b = 0 ;b<5;b++){
+            let shipPartDiv = document.createElement('div')
+            shipPartDiv.className = 'shipPart'
+            topShip.appendChild(shipPartDiv)
+        }
+
+
+    }
+    let shipDivNodes = document.querySelectorAll('.topShip')
+    shipDivNodes[0].id = 'Carrier'
+    for (let a = 0; a<5;a++){
+        (shipDivNodes[0].childNodes[a].id = 'alive')
+    }
+    
+    shipDivNodes[1].id = 'BattleShip'
+    for (let a = 0; a<4;a++){
+        (shipDivNodes[1].childNodes[a].id = 'alive')
+    }
+    shipDivNodes[2].id = 'Cruiser'
+    for (let a = 0; a<3;a++){
+        (shipDivNodes[2].childNodes[a].id = 'alive')
+    }
+    shipDivNodes[3].id = 'Submarine'
+    for (let a = 0; a<3;a++){
+        (shipDivNodes[3].childNodes[a].id = 'alive')
+    }
+    shipDivNodes[4].id = 'Destroyer'
+    for (let a = 0; a<2;a++){
+        (shipDivNodes[4].childNodes[a].id = 'alive')
+    }
+
+    }
+
+
+
     return {shipList,placeShip,gridCol,receiveAttack, missedHits,destroyedShips,
-        targetShoot,tempShoot,takenFields,cordsadd,hittedCords,genGrid}
+        targetShoot,tempShoot,takenFields,cordsadd,hittedCords,genGrid,genShipGrid}
 }
 
 export {Gameboard}
